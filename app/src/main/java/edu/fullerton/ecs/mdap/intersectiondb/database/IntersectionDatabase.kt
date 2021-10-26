@@ -5,14 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+/**
+ * Manages the database that stores the Intersection table and its entitites.
+ * The abstract class should inherit RoomDatabase()
+ */
 @Database(entities = [Intersection::class], version = 1, exportSchema = false)
 abstract class IntersectionDatabase: RoomDatabase() {
+    // Data access object for the entity.
     abstract val intersectionDao: IntersectionDao
 
     companion object {
+        // Holds a reference to the database.
         @Volatile
-        private var INSTANCE: IntersectionDatabase? = null
+        private var INSTANCE: IntersectionDatabase? = null // This class
 
+        // Retrieve an instance of the database tied to the context (your application).
         fun getInstance(context: Context): IntersectionDatabase {
             // Multiple threads can ask for the database at the same time, ensure we only initialize
             // it once by using synchronized. Only one thread may enter a synchronized block at a
@@ -23,18 +30,20 @@ abstract class IntersectionDatabase: RoomDatabase() {
                 // Smart cast is only available to local variables.
                 var instance = INSTANCE
 
-                // If instance is `null` make a new database instance.
+                // The first time the method is called, instance will be `null`, so we should create
+                // a new database instance. The next time it is called, the database instance
+                // already exists and does not need to be recreated.
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        IntersectionDatabase::class.java,
+                        IntersectionDatabase::class.java, // Your database class
                         "sleep_history_database"
                     )
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
                 }
-                // Return instance; smart cast to be non-null.
+                // Return database instance; smart cast to be non-null.
                 return instance
             }
         }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <!-- IntersectionViewModel variable used by the view to manage data -->
         <variable
             name="intersectionViewModel"
             type="edu.fullerton.ecs.mdap.intersectiondb.IntersectionViewModel" />
@@ -14,6 +15,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <!-- @= indicates that value in the edit text is copied to the ViewModel's name -->
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
@@ -23,11 +25,12 @@
             android:layout_marginEnd="10dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@={intersectionViewModel._name}"
+            android:text="@={intersectionViewModel.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- @= indicates that value in the edit text is copied to the ViewModel's location -->
         <EditText
             android:id="@+id/location"
             android:layout_width="match_parent"
@@ -37,11 +40,14 @@
             android:layout_marginEnd="10dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@={intersectionViewModel._location}"
+            android:text="@={intersectionViewModel.location}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
+        <!-- onClick accepts a lambda function indicated by () -> The body
+             of the lambda function calls the insert function
+         -->
         <Button
             android:id="@+id/add_intersection"
             android:layout_width="wrap_content"
@@ -53,6 +59,10 @@
             app:layout_constraintTop_toBottomOf="@+id/location"
             android:onClick="@{() -> intersectionViewModel.insert()}"/>
 
+        <!-- The value of the TextView is retrieved from the intersectionString
+             property. Recall that this is a LiveData String retrieved from the
+             database.
+         -->
         <TextView
             android:id="@+id/intersectionList"
             android:layout_width="match_parent"
@@ -66,6 +76,9 @@
             app:layout_constraintTop_toBottomOf="@+id/add_intersection"
             android:text="@{intersectionViewModel.intersectionString}"/>
 
+        <!-- onClick accepts a lambda function indicated by () -> The body
+             of the lambda function calls the clear function
+         -->
         <Button
             android:id="@+id/clear"
             android:layout_width="wrap_content"
